@@ -2,7 +2,7 @@ package rahmlab.datatype;
 
 import java.util.Map;
 
-public class PeopleKeypoints 
+public class PersonKeypoints 
 {
 	private Point[] poseKeypoints_2d = new Point[25];
 	private Point[] faceKeypoints_2d = new Point[0];
@@ -13,7 +13,7 @@ public class PeopleKeypoints
 	private Point[] handLeftKeypoints_3d = new Point[0];
 	private Point[] handRightKeypoints_3d = new Point[0];
 	
-	public PeopleKeypoints(Point[] poseKeypoints_2d)
+	public PersonKeypoints(Point[] poseKeypoints_2d)
 	{
 		if (poseKeypoints_2d.length == this.poseKeypoints_2d.length)
 		{
@@ -21,7 +21,7 @@ public class PeopleKeypoints
 		}
 	}
 	
-	public PeopleKeypoints(Map<Integer, Point> poseKeypoints_2d)
+	public PersonKeypoints(Map<Integer, Point> poseKeypoints_2d)
 	{
 		for (Integer i : poseKeypoints_2d.keySet())
 		{

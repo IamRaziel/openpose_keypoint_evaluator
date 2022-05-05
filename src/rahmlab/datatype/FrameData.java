@@ -5,9 +5,9 @@ import java.util.List;
 public class FrameData 
 {
 	private Double version;
-	private List<PeopleKeypoints> people;
+	private List<PersonKeypoints> people;
 	
-	public FrameData(Double version, List<PeopleKeypoints> people)
+	public FrameData(Double version, List<PersonKeypoints> people)
 	{
 		this.version = version;
 		this.people = people;
@@ -18,12 +18,12 @@ public class FrameData
 		return version;
 	}
 	
-	public void addPerson(PeopleKeypoints p)
+	public void addPerson(PersonKeypoints p)
 	{
 		people.add(p);
 	}
 	
-	public List<PeopleKeypoints> getPeople()
+	public List<PersonKeypoints> getPeople()
 	{
 		return people;
 	}

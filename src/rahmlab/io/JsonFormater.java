@@ -1,11 +1,13 @@
 package rahmlab.io;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import rahmlab.datatype.FrameData;
+import rahmlab.datatype.KeyPoint;
 import rahmlab.datatype.PersonKeypoints;
 import rahmlab.datatype.Point;
 
@@ -93,13 +95,13 @@ public class JsonFormater
 				local = local.substring(pos + 2, local.length());
 		}
 		
-		Map<String, Point[]> points = buildPoints(parts);
+		Map<String, KeyPoint[]> points = buildPoints(parts);
 		return buildPersonKeypointsFromPointMap(points);
 	}
 	
-	private PersonKeypoints buildPersonKeypointsFromPointMap(Map<String, Point[]> points)
+	private PersonKeypoints buildPersonKeypointsFromPointMap(Map<String, KeyPoint[]> points)
 	{
-		Point[] poseKeypoints_2d = new Point[25];
+		KeyPoint[] poseKeypoints_2d = new KeyPoint[25];
 		for (String key : points.keySet())
 		{
 			switch (key)
@@ -111,32 +113,32 @@ public class JsonFormater
 		return new PersonKeypoints(poseKeypoints_2d);
 	}
 
-	private Map<String, Point[]> buildPoints(List<String> parts)
+	private Map<String, KeyPoint[]> buildPoints(List<String> parts)
 	{
-		Map<String, Point[]> pointMap = new HashMap<String, Point[]>();
+		Map<String, KeyPoint[]> pointMap = new HashMap<String, KeyPoint[]>();
 		
 		for (String part : parts)
 		{
 			String[] splits = part.split("" + DOUBLE_POINT);
 			String key = removeOuterBrackes(splits[0]);
 			String value = removeOuterBrackes(splits[1]);
-			Point[] points = buildPointsForOnePart(value);
+			KeyPoint[] points = buildPointsForOnePart(value);
 			pointMap.put(key, points);
  		}
 		return pointMap;
 	}
 	
-	private Point[] buildPointsForOnePart(String part)
+	private KeyPoint[] buildPointsForOnePart(String part)
 	{
 		String[] numbers = part.split("" + COMMA);
-		Point[] points = new Point[numbers.length / 3];
+		KeyPoint[] points = new KeyPoint[numbers.length / 3];
 		for (int i = 0; i < points.length; i++)
 		{
 			int n = i * 3;
 			Double x = Double.valueOf(numbers[n + 0]);
 			Double y = Double.valueOf(numbers[n + 1]);
 			Double z = Double.valueOf(numbers[n + 2]);
-			points[i] = new Point(x, y, z);
+			points[i] = new KeyPoint(getKeypointColor(i), x, y, z);
 		}
 		return points;
 	}
@@ -152,5 +154,64 @@ public class JsonFormater
 			}
 		}
 		return -1;
+	}
+	
+	private Color getKeypointColor(int index)
+	{	
+		switch (index)
+		{
+		//HEAD
+			case 0: return Color.RED;
+			case 15: return Color.PINK;
+			//Purple
+			case 16: return new Color(172, 35, 210);
+			//Dark pink / light Purple
+			case 17: return new Color(210, 35, 61);
+			//Mix between dark blue and purple
+			case 18: return new Color(99, 35, 210);
+		//SPINE
+			//Darker Red
+			case 1: return new Color(200, 3, 3);
+			//Even Darker Red
+			case 8: return new Color(170, 0, 0);
+		//Left Arm
+			//Yellow-Green
+			case 5: return new Color(194, 255, 0);
+			//Darker Yellow-Green
+			case 6: return new Color(160, 209, 0);
+			//Even Darker Yellow-Green
+			case 7: return new Color(130, 170, 0);
+		//Right Arm
+			//Even Darerk Orange
+			case 2: return new Color(174, 71, 0);
+			//Brown Orange
+			case 3: return new Color(255, 151, 0);
+			//Orange
+			case 4: return new Color(255, 120, 0);
+		//Left Leg
+			//Light Green-Blue
+			case 9: return new Color(0, 255, 141);
+			//Dark Cyan
+			case 10: return new Color(0, 175, 148);
+			//LIghter Cyan
+			case 11: 
+		//Left Foot
+			case 22: 
+			case 23:
+			case 24:return new Color(0, 200, 169);
+		//Right Leg
+			//Blue
+			case 12: return new Color(0, 135, 255);
+			//darker Blue
+			case 13: return new Color(0, 106, 200);
+			//Dark Blue
+			case 14: 
+		//Right Foot
+			case 19:
+			case 20:
+			case 21: return new Color(8, 0, 255);
+		}
+		
+		return Color.BLACK;
 	}
 }

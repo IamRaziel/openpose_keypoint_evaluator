@@ -151,8 +151,6 @@ public class GUI extends JFrame
 		return fiveTimesFivePanel;
 	}
 	
-	private JPanel createOneKeypointPanel()
-	
 	private void diagramTypeBox_checked(boolean checked, int index)
 	{
 		if (checked)

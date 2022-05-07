@@ -27,4 +27,9 @@ public class Point
 	{
 		return z;
 	}
+	
+	public Point clone()
+	{
+		return new Point(x, y, z);
+	}
 }

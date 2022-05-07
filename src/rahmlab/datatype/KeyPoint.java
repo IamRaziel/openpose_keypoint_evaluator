@@ -11,9 +11,9 @@ public class KeyPoint extends Point
 		this(color, point.getX(), point.getY(), point.getZ());
 	}
 	
-	public KeyPoint(Color color, double d, double e, double f)
+	public KeyPoint(Color color, double x, double y, double z)
 	{
-		super(d, e, f);
+		super(x, y, z);
 		this.color = color;
 	}
 	
@@ -25,5 +25,11 @@ public class KeyPoint extends Point
 	public boolean isNotNullValue()
 	{
 		return getX() != 0 || getY() != 0 || getZ() != 0;
+	}
+	
+	@Override
+	public KeyPoint clone()
+	{
+		return new KeyPoint(color, getX(), getY(), getZ());
 	}
 }

@@ -8,10 +8,12 @@ import java.util.List;
 import rahmlab.datatype.FrameData;
 import rahmlab.io.JsonFileFinder;
 import rahmlab.io.KeypointReader;
+import rahmlab.ui.GUI;
 
 
 public class Startup 
 {
+	private static List<FrameData> frames;
 
 	public static void main(String[] args) 
 	{
@@ -32,7 +34,8 @@ public class Startup
 		}
 		Arguments arguments = ArgumentsFactory.build(args);
 		KeypointReader reader = new KeypointReader(new JsonFileFinder(arguments.getDirectoryPath()));
-		List<FrameData> frames = reader.getFrames();
-		int i = 0;
+		frames = reader.getFrames();
+		GUI gui = new GUI();
+		gui.uploadFrameData(frames);
 	}
 }

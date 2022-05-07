@@ -1,6 +1,7 @@
 package rahmlab.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -13,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import rahmlab.datatype.FrameData;
+import rahmlab.datatype.KeyPoint;
+import rahmlab.ui.components.FiveTimesFivePanel;
 import rahmlab.ui.graph.BalkenDiagramm;
 import rahmlab.ui.graph.Graph;
 
@@ -23,7 +26,8 @@ public class GUI extends JFrame
 	
 	private List<ResizeListener> resizables = new ArrayList<ResizeListener>();
 	private JCheckBox[] diagramTypeBoxes = new JCheckBox[4];
-	private JCheckBox[] fiveTimeFiveBoxes = new JCheckBox[25];
+//	private JCheckBox[] fiveTimeFiveBoxes = new JCheckBox[25];
+	private FiveTimesFivePanel fiveTimeFivePanel = new FiveTimesFivePanel();
 	private Graph graph;
 	
 	public GUI()
@@ -58,7 +62,10 @@ public class GUI extends JFrame
 		leftPanel.add(createKeypointPartBoxes());
 		
 		headPanel.add(leftPanel);
-		headPanel.add(createKeypointsCheckPanel());
+		
+		fiveTimeFivePanel = new FiveTimesFivePanel();
+		fiveTimeFivePanel.addDrawPointsListener(e -> graph.drawPoints(e));
+		headPanel.add(fiveTimeFivePanel);
 		
 		return headPanel;
 	}
@@ -132,25 +139,6 @@ public class GUI extends JFrame
 		return panel;
 	}
 	
-	private JPanel createKeypointsCheckPanel()
-	{
-		JPanel fiveTimesFivePanel = new JPanel();
-		fiveTimesFivePanel.setBorder(BorderFactory.createTitledBorder("Keypoints Body_25"));
-		GridLayout fiveTimesFiveLayout = new GridLayout(5, 5);
-		fiveTimesFivePanel.setLayout(fiveTimesFiveLayout);
-		
-		for (int i = 0; i < fiveTimeFiveBoxes.length; i++)
-		{
-			JCheckBox box = new JCheckBox();
-			box.setLabel("K: " + i);
-			box.addActionListener(e -> fiveTimesFive_checked());
-			fiveTimeFiveBoxes[i] = box;
-			fiveTimesFivePanel.add(box);
-		}
-		
-		return fiveTimesFivePanel;
-	}
-	
 	private void diagramTypeBox_checked(boolean checked, int index)
 	{
 		if (checked)
@@ -167,26 +155,13 @@ public class GUI extends JFrame
 		}
 	}
 	
-	private void fiveTimesFive_checked()
-	{
-		List<Integer> selectedKeypoints = new ArrayList<Integer>();
-		for (int i = 0; i < fiveTimeFiveBoxes.length; i++)
-		{
-			if (fiveTimeFiveBoxes[i].isSelected())
-			{
-				selectedKeypoints.add(i);
-			}
-		}
-		graph.drawPoints(selectedKeypoints);
-	}
-	
 	private void combinedKeypointBoxes_checked(boolean checked, int... keypoints)
 	{
 		for (int keypoint : keypoints)
 		{
-			fiveTimeFiveBoxes[keypoint].setSelected(checked);
+			fiveTimeFivePanel.setSelected(keypoint, checked);
 		}
-		fiveTimesFive_checked();
+		fiveTimeFivePanel.box_checked();
 	}
 	
 	public void uploadFrameData(List<FrameData> frameData)
@@ -194,6 +169,18 @@ public class GUI extends JFrame
 		if (graph != null)
 		{
 			graph.addFrames(frameData);
+			addColorsToFiveTimesFiveBoxes(frameData.get(0));
 		}
+	}
+	
+	private void addColorsToFiveTimesFiveBoxes(FrameData frame)
+	{
+		KeyPoint[] points = frame.getPeople().get(0).getPoseKeypoints_2d();
+		Color[] colors = new Color[FiveTimesFivePanel.BOXES_COUNT];
+		for (int i = 0; i < colors.length; i++)
+		{
+			colors[i] = points[i].getColor();
+		}
+		fiveTimeFivePanel.setColors(colors);
 	}
 }

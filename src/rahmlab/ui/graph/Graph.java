@@ -20,6 +20,8 @@ public abstract class Graph extends JPanel implements ResizeListener
 	protected int height;
 	protected int width;
 	protected final int SPACING = 20;
+	protected List<FrameData> frames = new ArrayList<FrameData>();
+	protected List<Integer> pointsIndex = new ArrayList<Integer>();
 	private String xAxisName = "X";
 	private String yAxisName = "Y";
 	private List<Point> xPoints = new ArrayList<Point>();
@@ -39,6 +41,16 @@ public abstract class Graph extends JPanel implements ResizeListener
 		upperRightCorner = new Point(this.getX(), this.getY() + width, 0);
 		downLeftCorner = new Point(this.getX() + height, this.getY(), 0);
 		downRightCorner = new Point(this.getX() + height, this.getY() + width, 0);
+	}
+	
+	public List<FrameData> getFrames()
+	{
+		return new ArrayList<FrameData>(frames);
+	}
+	
+	public List<Integer> getSelectedPoints()
+	{
+		return new ArrayList<Integer>(pointsIndex);
 	}
 	
 	protected int x(int value)
@@ -119,7 +131,37 @@ public abstract class Graph extends JPanel implements ResizeListener
 		g.drawLine(SPACING + SPACING / 2, SPACING + SPACING / 2, SPACING, SPACING);
 		g.drawLine(SPACING / 2, SPACING + SPACING / 2, SPACING, SPACING);
 		g.drawString(yAxisName, SPACING / 2, SPACING / 2);
-		for (int i = 0; i < yPoints.size(); i++)
+		drawStepsOnYAxis(g);
+		
+		//x-Axis
+		g.drawLine(SPACING, height - SPACING, width - SPACING, height - SPACING);
+		g.drawLine(width - SPACING - SPACING / 2, height - SPACING - SPACING / 2, width - SPACING, height - SPACING);
+		g.drawLine(width - SPACING - SPACING / 2, height - SPACING / 2, width - SPACING, height - SPACING);
+		g.drawString(xAxisName, width - SPACING, height - SPACING / 2);
+		drawStepsOnXAxis(g);
+	}
+	
+	private void drawStepsOnYAxis(Graphics g)
+	{
+		int iDiff = 1;
+		if (yPoints.size() >= 500)
+		{
+			iDiff = 50;
+		}
+		if (yPoints.size() >= 200)
+		{
+			iDiff = 20;
+		}
+		else if (yPoints.size() >= 100)
+		{
+			iDiff = 10;
+		}
+		else if (yPoints.size() >= 50)
+		{
+			iDiff = 5;
+		}
+		
+		for (int i = 0; i <= yPoints.size() - iDiff; i+=iDiff)
 		{
 			Point p = yPoints.get(i);
 			int y = (int)p.getY();
@@ -129,13 +171,30 @@ public abstract class Graph extends JPanel implements ResizeListener
 			g.drawLine(x1, y, x2, y);
 			g.drawString("" + (i + 1), xS, y);
 		}
+	}
+	
+	private void drawStepsOnXAxis(Graphics g)
+	{
+		int iDiff = 1;
+		if (yPoints.size() >= 5000)
+		{
+			iDiff = 100;
+		}
+		else if (yPoints.size() >= 1000)
+		{
+			iDiff = 50;
+		}
+		else if (yPoints.size() >= 200)
+		{
+			iDiff = 10;
+		}
+		else if (yPoints.size() >= 100)
+		{
+			iDiff = 5;
+		}
 		
-		//x-Axis
-		g.drawLine(SPACING, height - SPACING, width - SPACING, height - SPACING);
-		g.drawLine(width - SPACING - SPACING / 2, height - SPACING - SPACING / 2, width - SPACING, height - SPACING);
-		g.drawLine(width - SPACING - SPACING / 2, height - SPACING / 2, width - SPACING, height - SPACING);
-		g.drawString(xAxisName, width - SPACING, height - SPACING / 2);
-		for (int i = 0; i < xPoints.size(); i++)
+		
+		for (int i = 0; i <= xPoints.size() - iDiff; i+=iDiff)
 		{
 			Point p = xPoints.get(i);
 			int yS = (int)p.getY() + SPACING / 2;
@@ -154,7 +213,7 @@ public abstract class Graph extends JPanel implements ResizeListener
 		this.height = getHeight();
 	}
 	
-	public abstract void addFrames(List<FrameData> frames);
+	public abstract void setFrames(List<FrameData> frames);
 	
 	public abstract void drawPoints(List<Integer> pointsIndex);
 }

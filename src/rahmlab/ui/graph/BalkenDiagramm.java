@@ -11,17 +11,15 @@ import rahmlab.datatype.Point;
 
 public class BalkenDiagramm extends Graph
 {
-	private List<FrameData> frames;
-	private List<Integer> pointsIndex;
 	private int distanceY = -1;
 	
 	public BalkenDiagramm()
 	{
 		super();
 	}
-
+	
 	@Override
-	public void addFrames(List<FrameData> frames) 
+	public void setFrames(List<FrameData> frames)
 	{
 		this.frames = frames;
 		sizeTheXAxis(frames.size());

@@ -18,6 +18,7 @@ import rahmlab.datatype.KeyPoint;
 import rahmlab.ui.components.FiveTimesFivePanel;
 import rahmlab.ui.graph.BalkenDiagramm;
 import rahmlab.ui.graph.Graph;
+import rahmlab.ui.graph.PointCloud;
 
 public class GUI extends JFrame
 {
@@ -26,29 +27,56 @@ public class GUI extends JFrame
 	
 	private List<ResizeListener> resizables = new ArrayList<ResizeListener>();
 	private JCheckBox[] diagramTypeBoxes = new JCheckBox[4];
-//	private JCheckBox[] fiveTimeFiveBoxes = new JCheckBox[25];
 	private FiveTimesFivePanel fiveTimeFivePanel = new FiveTimesFivePanel();
+	
+	private List<FrameData> frames;
 	private Graph graph;
+	private final Graph balkenDiagramm;
+	private final Graph pointCloud;
+	private final Graph[] graphs = new Graph[4];
 	
 	public GUI()
 	{
+		balkenDiagramm = new BalkenDiagramm();
+		pointCloud = new PointCloud();
+		graphs[0] = balkenDiagramm;
+		graphs[1] = pointCloud;
+		
 		setSize(X, Y);
 		setLayout(new BorderLayout()); 
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		add(createHeadPanel(), BorderLayout.PAGE_START);
 		
-		graph = new BalkenDiagramm();
-		resizables.add(graph);
-		
-		add(graph, BorderLayout.CENTER);
-		//in this order, so the graph gets an size
-		setVisible(true);
-		graph.initialize();
+		setGraphAndInitialize(balkenDiagramm);
 		
 		this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
             	resizables.forEach(a -> a.resized());
             }
         });
+	}
+	
+	private boolean setGraphAndInitialize(Graph g)
+	{
+		if (g == null || graph == g)
+			return false;
+		
+		Graph oldGraph = graph;
+		if (oldGraph != null) 
+			resizables.remove(oldGraph);
+		graph = g;
+		resizables.add(graph);
+		add(graph, BorderLayout.CENTER);
+		setVisible(true);
+		graph.initialize();
+		if (oldGraph != null)
+		{
+			graph.setFrames(frames);
+			graph.drawPoints(oldGraph.getSelectedPoints());
+		}
+		graph.repaint();
+		return true;
 	}
 	
 	private JPanel createHeadPanel()
@@ -79,10 +107,11 @@ public class GUI extends JFrame
 		panel.setBorder(BorderFactory.createTitledBorder("Diagramm Type"));
 		
 		JCheckBox boxGraphOne = new JCheckBox();
-		boxGraphOne.setLabel("One");
+		boxGraphOne.setLabel("Balken Diagramm");
+		boxGraphOne.setSelected(true);
 		boxGraphOne.addActionListener(e -> diagramTypeBox_checked(boxGraphOne.isSelected(), 0));
 		JCheckBox boxGraphTwo = new JCheckBox();
-		boxGraphTwo.setLabel("Two");
+		boxGraphTwo.setLabel("Point Cloud");
 		boxGraphTwo.addActionListener(e -> diagramTypeBox_checked(boxGraphTwo.isSelected(), 1));
 		JCheckBox boxGraphThree = new JCheckBox();
 		boxGraphThree.setLabel("Three");
@@ -143,13 +172,12 @@ public class GUI extends JFrame
 	{
 		if (checked)
 		{
-			diagramTypeBoxes[index].setSelected(checked);
-			for (int i = 0; i < diagramTypeBoxes.length; i++)
+			boolean graphChanged = setGraphAndInitialize(graphs[index]);
+			if (graphChanged)
 			{
-				if (i != index) diagramTypeBoxes[i].setSelected(false);
-				if (i == index)
+				for (int i = 0; i < diagramTypeBoxes.length; i++)
 				{
-					//TODO
+					diagramTypeBoxes[i].setSelected(i == index);
 				}
 			}
 		}
@@ -168,7 +196,8 @@ public class GUI extends JFrame
 	{
 		if (graph != null)
 		{
-			graph.addFrames(frameData);
+			frames = frameData;
+			graph.setFrames(frameData);
 			addColorsToFiveTimesFiveBoxes(frameData.get(0));
 		}
 	}

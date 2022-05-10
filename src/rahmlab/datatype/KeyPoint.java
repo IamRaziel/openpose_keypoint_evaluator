@@ -22,11 +22,6 @@ public class KeyPoint extends Point
 		return color;
 	}
 	
-	public boolean isNotNullValue()
-	{
-		return getX() != 0 || getY() != 0 || getZ() != 0;
-	}
-	
 	@Override
 	public KeyPoint clone()
 	{

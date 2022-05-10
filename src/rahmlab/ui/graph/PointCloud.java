@@ -57,12 +57,15 @@ public class PointCloud extends Graph
 	{
 		g.setColor(point.getColor());
 		Point pointX = getXPoints().get((int)point.getX());
-		int posX = (int)pointX.getX() - POINT_DIAMETER / 2;
-		Point pointY = getYPoints().get((int)point.getY());
-		int posY = (int)pointY.getY() - POINT_DIAMETER / 2;
-		g.fillOval(posX, posY, POINT_DIAMETER, POINT_DIAMETER);
-		g.setColor(Color.BLACK);
-		g.drawOval(posX, posY, POINT_DIAMETER, POINT_DIAMETER);
+		if (pointX.isNotNullValue())
+		{
+			int posX = (int)pointX.getX() - POINT_DIAMETER / 2;
+			Point pointY = getYPoints().get((int)point.getY());
+			int posY = (int)pointY.getY() - POINT_DIAMETER / 2;
+			g.fillOval(posX, posY, POINT_DIAMETER, POINT_DIAMETER);
+			g.setColor(Color.BLACK);
+			g.drawOval(posX, posY, POINT_DIAMETER, POINT_DIAMETER);
+		}
 	}
 	
 	private void calcAndSetSizeAxis()

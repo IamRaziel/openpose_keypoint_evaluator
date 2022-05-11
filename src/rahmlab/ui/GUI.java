@@ -18,6 +18,7 @@ import rahmlab.datatype.KeyPoint;
 import rahmlab.ui.components.FiveTimesFivePanel;
 import rahmlab.ui.graph.BalkenDiagramm;
 import rahmlab.ui.graph.Graph;
+import rahmlab.ui.graph.LineGraph;
 import rahmlab.ui.graph.PointCloud;
 
 public class GUI extends JFrame
@@ -33,14 +34,17 @@ public class GUI extends JFrame
 	private Graph graph;
 	private final Graph balkenDiagramm;
 	private final Graph pointCloud;
+	private final Graph lineGraph;
 	private final Graph[] graphs = new Graph[4];
 	
 	public GUI()
 	{
 		balkenDiagramm = new BalkenDiagramm();
 		pointCloud = new PointCloud();
+		lineGraph = new LineGraph();
 		graphs[0] = balkenDiagramm;
 		graphs[1] = pointCloud;
+		graphs[2] = lineGraph;
 		
 		setSize(X, Y);
 		setLayout(new BorderLayout()); 
@@ -114,7 +118,7 @@ public class GUI extends JFrame
 		boxGraphTwo.setLabel("Point Cloud");
 		boxGraphTwo.addActionListener(e -> diagramTypeBox_checked(boxGraphTwo.isSelected(), 1));
 		JCheckBox boxGraphThree = new JCheckBox();
-		boxGraphThree.setLabel("Three");
+		boxGraphThree.setLabel("Line Graph");
 		boxGraphThree.addActionListener(e -> diagramTypeBox_checked(boxGraphThree.isSelected(), 2));
 		JCheckBox boxGraphFour = new JCheckBox();
 		boxGraphFour.setLabel("Four");

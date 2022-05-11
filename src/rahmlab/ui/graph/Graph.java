@@ -161,7 +161,7 @@ public abstract class Graph extends JPanel implements ResizeListener
 			iDiff = 5;
 		}
 		
-		for (int i = 0; i <= yPoints.size() - iDiff; i+=iDiff)
+		for (int i = 0; i < yPoints.size(); i+=iDiff)
 		{
 			Point p = yPoints.get(i);
 			int y = (int)p.getY();
@@ -170,31 +170,32 @@ public abstract class Graph extends JPanel implements ResizeListener
 			int x2 = (int)p.getX() + SPACING / 4;
 			g.drawLine(x1, y, x2, y);
 			g.drawString("" + (i + 1), xS, y);
+			if (i == 0 && iDiff > 1) i--;
 		}
 	}
 	
 	private void drawStepsOnXAxis(Graphics g)
 	{
 		int iDiff = 1;
-		if (yPoints.size() >= 5000)
+		if (xPoints.size() >= 5000)
 		{
 			iDiff = 100;
 		}
-		else if (yPoints.size() >= 1000)
+		else if (xPoints.size() >= 1000)
 		{
 			iDiff = 50;
 		}
-		else if (yPoints.size() >= 200)
+		else if (xPoints.size() >= 200)
 		{
 			iDiff = 10;
 		}
-		else if (yPoints.size() >= 100)
+		else if (xPoints.size() >= 100)
 		{
 			iDiff = 5;
 		}
 		
 		
-		for (int i = 0; i <= xPoints.size() - iDiff; i+=iDiff)
+		for (int i = 0; i < xPoints.size(); i+=iDiff)
 		{
 			Point p = xPoints.get(i);
 			int yS = (int)p.getY() + SPACING / 2;
@@ -203,6 +204,7 @@ public abstract class Graph extends JPanel implements ResizeListener
 			int x = (int)p.getX();
 			g.drawLine(x, y1, x, y2);
 			g.drawString("" + (i + 1), x, yS);
+			if (i == 0 && iDiff > 1) i--;
 		}
 	}
 	

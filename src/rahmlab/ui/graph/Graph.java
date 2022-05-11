@@ -1,5 +1,6 @@
 package rahmlab.ui.graph;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -124,6 +125,9 @@ public abstract class Graph extends JPanel implements ResizeListener
 	{
 		super.paintComponent(g);
 		g.clearRect(0, 0, width, height);
+		
+		paintVisibilityPercentage(g);
+		
 		g.setFont(new Font(Font.DIALOG, Font.ITALIC, 8));
 		
 		//y-Axis
@@ -141,6 +145,17 @@ public abstract class Graph extends JPanel implements ResizeListener
 		drawStepsOnXAxis(g);
 	}
 	
+	private void paintVisibilityPercentage(Graphics g) 
+	{
+		double percent = calcAverageVisibilityOfTheSelectedKeypoints();
+		if (percent > 0)
+		{
+			g.setColor(Color.BLACK);
+			g.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+			g.drawString("Keypoints Visible: " + percent + "%", width - 14 * SPACING, SPACING * 4 / 5);
+		}
+	}
+
 	private void drawStepsOnYAxis(Graphics g)
 	{
 		int iDiff = 1;
@@ -213,6 +228,41 @@ public abstract class Graph extends JPanel implements ResizeListener
 	{
 		this.width = getWidth();
 		this.height = getHeight();
+	}
+	
+	public double calcAverageVisibilityOfTheSelectedKeypoints()
+	{
+		if (pointsIndex.size() == 0) return 0;
+		
+		double countPoints = pointsIndex.size();
+		double counterPercent = 0;
+		for (int index : pointsIndex)
+		{
+			counterPercent += calcVisibilityOfKeypoint(index);
+		}
+		double percentTimes100 = (counterPercent / countPoints) * 100 * 100;
+		int roundedTwoAfterComma = (int)(percentTimes100 + 0.5);
+		double percent = ((double)roundedTwoAfterComma) / 100;
+		return percent;
+	}
+	
+	public double calcVisibilityOfKeypoint(int keypointIndex)
+	{
+		if (frames.size() == 0) return 0;
+		
+		double c = 0;
+		double n = frames.size();
+		
+		for (FrameData frame : frames)
+		{
+			if (frame.getPeople() != null && frame.getPeople().size() > 0)
+			{
+				Point p = frame.getPeople().get(0).getPoseKeypoints_2d()[keypointIndex];
+				c += p.isNotNullValue() ? 1 : 0;
+			}
+				
+		}
+		return c / n;
 	}
 	
 	public abstract void setFrames(List<FrameData> frames);

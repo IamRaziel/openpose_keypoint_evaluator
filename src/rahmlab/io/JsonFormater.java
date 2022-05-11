@@ -35,8 +35,6 @@ public class JsonFormater
 		//	{"version":1.2,"people":[{},{}]}
 		JsonFormater formater = new JsonFormater(fileValue);
 		
-		System.out.println(fileValue);
-		
 		formater.fileValue = formater.removeOuterBrackes(formater.fileValue);
 		Double version = formater.getVersion();
 		List<PersonKeypoints> peopleKeypoints = formater.buildPeopleKeypoints();

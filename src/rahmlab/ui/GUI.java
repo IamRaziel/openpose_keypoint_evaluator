@@ -111,14 +111,14 @@ public class GUI extends JFrame
 		panel.setBorder(BorderFactory.createTitledBorder("Diagramm Type"));
 		
 		JCheckBox boxGraphOne = new JCheckBox();
-		boxGraphOne.setLabel("Balken Diagramm");
+		boxGraphOne.setLabel("Bar Chart");
 		boxGraphOne.setSelected(true);
 		boxGraphOne.addActionListener(e -> diagramTypeBox_checked(boxGraphOne.isSelected(), 0));
 		JCheckBox boxGraphTwo = new JCheckBox();
 		boxGraphTwo.setLabel("Point Cloud");
 		boxGraphTwo.addActionListener(e -> diagramTypeBox_checked(boxGraphTwo.isSelected(), 1));
 		JCheckBox boxGraphThree = new JCheckBox();
-		boxGraphThree.setLabel("Line Graph");
+		boxGraphThree.setLabel("Line Chart");
 		boxGraphThree.addActionListener(e -> diagramTypeBox_checked(boxGraphThree.isSelected(), 2));
 		JCheckBox boxGraphFour = new JCheckBox();
 		boxGraphFour.setLabel("Four");
@@ -132,7 +132,7 @@ public class GUI extends JFrame
 		panel.add(boxGraphOne);
 		panel.add(boxGraphTwo);
 		panel.add(boxGraphThree);
-		panel.add(boxGraphFour);
+//		panel.add(boxGraphFour);
 		
 		return panel;
 	}

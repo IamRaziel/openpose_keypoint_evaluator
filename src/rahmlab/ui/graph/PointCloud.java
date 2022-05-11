@@ -11,7 +11,6 @@ import rahmlab.datatype.Point;
 
 public class PointCloud extends Graph
 {
-	private List<FrameData> frames;
 	private final int POINT_DIAMETER = 8;
 	
 	public PointCloud()

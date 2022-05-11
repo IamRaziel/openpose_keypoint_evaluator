@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import rahmlab.datatype.FrameData;
 import rahmlab.datatype.KeyPoint;
 import rahmlab.ui.components.FiveTimesFivePanel;
-import rahmlab.ui.graph.BalkenDiagramm;
+import rahmlab.ui.graph.BarChart;
 import rahmlab.ui.graph.Graph;
-import rahmlab.ui.graph.LineGraph;
+import rahmlab.ui.graph.LineChart;
 import rahmlab.ui.graph.PointCloud;
 
 public class GUI extends JFrame
@@ -39,9 +39,9 @@ public class GUI extends JFrame
 	
 	public GUI()
 	{
-		balkenDiagramm = new BalkenDiagramm();
+		balkenDiagramm = new BarChart();
 		pointCloud = new PointCloud();
-		lineGraph = new LineGraph();
+		lineGraph = new LineChart();
 		graphs[0] = balkenDiagramm;
 		graphs[1] = pointCloud;
 		graphs[2] = lineGraph;

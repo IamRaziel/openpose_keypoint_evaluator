@@ -7,10 +7,10 @@ import java.util.List;
 import rahmlab.datatype.FrameData;
 import rahmlab.datatype.Point;
 
-public class LineGraph extends Graph
+public class LineChart extends Graph
 {
 	
-	public LineGraph()
+	public LineChart()
 	{
 		super();
 	}

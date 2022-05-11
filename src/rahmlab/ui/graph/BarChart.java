@@ -9,11 +9,11 @@ import rahmlab.datatype.KeyPoint;
 import rahmlab.datatype.PersonKeypoints;
 import rahmlab.datatype.Point;
 
-public class BalkenDiagramm extends Graph
+public class BarChart extends Graph
 {
 	private int distanceY = -1;
 	
-	public BalkenDiagramm()
+	public BarChart()
 	{
 		super();
 	}
